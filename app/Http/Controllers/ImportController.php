@@ -27,6 +27,6 @@ final readonly class ImportController
             return response()->json(['error' => 'File is empty'], 422);
         }
 
-        return response()->json(['message' => 'OK']);
+        return response()->json(['message' => 'OK'], 201);
     }
 }
