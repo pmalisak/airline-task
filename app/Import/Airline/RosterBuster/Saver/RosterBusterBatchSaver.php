@@ -6,6 +6,7 @@ namespace App\Import\Airline\RosterBuster\Saver;
 
 use App\Import\Airline\RosterBuster\Parser\Data;
 use App\Import\Exception\InvalidArgumentException;
+use App\Models\Activity;
 use App\Models\Crew;
 use App\Models\Event;
 use App\Models\Roster;
@@ -33,8 +34,8 @@ class RosterBusterBatchSaver
             }
 
             $event = new Event();
-            $event->type = $row->activity;
-            $event->activity = $row->activity;
+            $event->activity = $this->mapActivity($row->activity);
+            $event->activity_details = $row->activity;
             $event->from = $row->from;
             $event->std = $row->std;
             $event->to = $row->to;
@@ -49,5 +50,18 @@ class RosterBusterBatchSaver
                 $roster->update();
             }
         }
+    }
+
+    private function mapActivity(string $activity): string
+    {
+        if (\str_starts_with($activity, 'DX')) {
+            return Activity::FLT->value;
+        }
+
+        return match ($activity) {
+            'SBY' => Activity::SBY->value,
+            'OFF' => Activity::DO->value,
+            default => Activity::UNK->value,
+        };
     }
 }
