@@ -14,7 +14,7 @@ final readonly class PeriodExtractor
         $periodElement = $document->find('#ctl00_Main_periodSelect > option[selected]');
 
         if (! $periodElement) {
-            throw new ImportException('Period element not found');
+            throw new ImportException('Selected option not found');
         }
 
         if (! preg_match('#(\d{4}-\d{2}-\d{2})\|(\d{4}-\d{2}-\d{2})#i', $periodElement[0]->attr('value'), $matches)) {

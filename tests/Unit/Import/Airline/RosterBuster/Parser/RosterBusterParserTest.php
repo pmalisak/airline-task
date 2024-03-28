@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Import\Airline\RosterBuster;
+namespace Tests\Unit\Import\Airline\RosterBuster\Parser;
 
 use App\Import\Airline\RosterBuster\Parser\CrewNameExtractor;
 use App\Import\Airline\RosterBuster\Parser\PeriodExtractor;
@@ -29,7 +29,7 @@ class RosterBusterParserTest extends TestCase
 
     public function testFileSupported(): void
     {
-        $this->assertTrue($this->parser->supports(\file_get_contents(dirname(__FILE__) . '/RosterCrewConnex.html')));
+        $this->assertTrue($this->parser->supports(\file_get_contents('tests/Data/RosterCrewConnex.html')));
     }
 
     public function testFileNotSupported(): void
@@ -39,7 +39,7 @@ class RosterBusterParserTest extends TestCase
 
     public function testParse(): void
     {
-        $result = $this->parser->parse(\file_get_contents(dirname(__FILE__) . '/RosterCrewConnex.html'));
+        $result = $this->parser->parse(\file_get_contents('tests/Data/RosterCrewConnex.html'));
 
         $this->assertSame('Jan de Bosman', $result->crewName);
         $this->assertCount(35, $result->rows);

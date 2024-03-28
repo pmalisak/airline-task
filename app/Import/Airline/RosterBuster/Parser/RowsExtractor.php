@@ -17,7 +17,7 @@ final readonly class RowsExtractor
     public function extract(Document $document): array
     {
         $trList = $document->find('#ctl00_Main_activityGrid tr');
-        if (is_null($trList)) {
+        if (! $trList) {
             return [];
         }
 

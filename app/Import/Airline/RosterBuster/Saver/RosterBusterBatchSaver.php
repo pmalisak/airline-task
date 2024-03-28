@@ -21,16 +21,12 @@ class RosterBusterBatchSaver
         $crew = Crew::firstWhere('name', $data->crewName);
 
         foreach ($data->rows as $row) {
-            if ($row->date) {
+            if ($row->date || ! isset($roster)) {
                 $roster = new Roster();
                 $roster->crew_id = $crew->id;
                 $roster->date = new \DateTimeImmutable($row->date);
                 $roster->start_time = $row->checkInTime;
                 $roster->save();
-            }
-
-            if (!isset($roster)) {
-                throw new InvalidArgumentException('Data is corrupt');
             }
 
             $event = new Event();

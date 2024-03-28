@@ -36,7 +36,7 @@ php artisan test
 Coverage report:
 
 ```shell
-DEBUG_MODE=coverage vendor/bin/phpunit --coverage-html tests/Report/
+XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html tests/Report/
 ```
 
 

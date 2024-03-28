@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Import\Airline\RosterBuster;
+namespace Tests\Unit\Import\Airline\RosterBuster\Provider;
 
 use App\Import\Airline\RosterBuster\Parser\RowsExtractor;
 use DiDom\Document;
@@ -12,7 +12,7 @@ class RowsExtractorTest extends TestCase
 {
     public function testExtract(): void
     {
-        $document = new Document(\file_get_contents(dirname(__FILE__) . '/RosterCrewConnex.html'));
+        $document = new Document(\file_get_contents('tests/Data/RosterCrewConnex.html'));
 
         $extractor = new RowsExtractor();
         $rows = $extractor->extract($document);
@@ -44,5 +44,15 @@ class RowsExtractorTest extends TestCase
             '0:50',
             '10:10',
         ], array_values((array) $rows[7]));
+    }
+
+    public function testNotFound(): void
+    {
+        $document = new Document('<html><body>something</body></html>');
+
+        $extractor = new RowsExtractor();
+        $rows = $extractor->extract($document);
+
+        $this->assertEmpty($rows);
     }
 }
