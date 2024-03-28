@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.4"
 services:
     nginx:
         image: "nginx:1.25.3-alpine"
@@ -16,32 +16,8 @@ services:
         build: docker/php-fpm
         restart: always
         working_dir: /app
-        links:
-            - mariadb
         volumes:
             - ".:/app"
             - "./docker/php-fpm/php-overrides.ini:/usr/local/etc/php/conf.d/php-overrides.ini"
         environment:
             XDEBUG_MODE: "debug"
-
-    redis:
-        image: "redis:7.2.4-alpine"
-        environment:
-            ALLOW_EMPTY_PASSWORD: "yes"
-
-    mariadb:
-        image: "mariadb:11.3.1-rc"
-        restart: always
-        working_dir: /app
-        volumes:
-            - ".:/app"
-            - "./mariadb/data:/var/lib/mysql"
-            - "./mariadb/logs:/var/log/mysql"
-            - "./mariadb/conf:/etc/mysql"
-        environment:
-            MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
-            MARIADB_DATABASE: "${MARIADB_DATABASE}"
-            MARIADB_USER: "${MARIADB_USER}"
-            MARIADB_PASSWORD: "${MARIADB_PASSWORD}"
-        ports:
-            - "3306:3306"
